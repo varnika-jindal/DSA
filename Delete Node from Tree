@@ -1,0 +1,89 @@
+import java.util.*;
+class Main{
+    static class TreeNode{
+        int data;
+        TreeNode left,right;
+        TreeNode(int value){
+            data=value;
+            left=right=null;
+        }
+public static TreeNode deleteNode(TreeNode root, int key) {
+                if (root == null) return null;
+
+                if (root.left == null && root.right == null) {
+                    return root.data == key ? null : root;
+                }
+
+                TreeNode keyNode = null;
+                Queue<TreeNode> queue = new LinkedList<>();
+                queue.offer(root);
+                TreeNode temp = null;
+
+                while (!queue.isEmpty()) {
+                    temp = queue.poll();
+
+                    if (temp.data == key) {
+                        keyNode = temp;
+                    }
+
+                    if (temp.left != null) queue.offer(temp.left);
+                    if (temp.right != null) queue.offer(temp.right);
+                }
+
+                if (keyNode != null) {
+                    int x = temp.data; 
+                    deleteDeepest(root, temp);
+                    keyNode.data = x;
+                }
+
+                return root;
+            }
+
+            private static void deleteDeepest(TreeNode root, TreeNode delNode) {
+                Queue<TreeNode> queue = new LinkedList<>();
+                queue.offer(root);
+
+                while (!queue.isEmpty()) {
+                    TreeNode curr = queue.poll();
+
+                    if (curr.left != null) {
+                        if (curr.left == delNode) {
+                            curr.left = null;
+                            return;
+                        } else {
+                            queue.offer(curr.left);
+                        }
+                    }
+
+                    if (curr.right != null) {
+                        if (curr.right == delNode) {
+                            curr.right = null;
+                            return;
+                        } else {
+                            queue.offer(curr.right);
+                        }
+                    }
+                }
+            }
+            public static void main(String[] args) {
+            TreeNode root = new TreeNode(1);
+            root.left = new TreeNode(2);
+            root.right = new TreeNode(3);
+            root.left.left = new TreeNode(4);
+            root.left.right = new TreeNode(5);
+            root.right.left = new TreeNode(6);
+            root.right.right = new TreeNode(7);
+            root.left.left.left = new TreeNode(8);
+            root.left.left.right = new TreeNode(9);
+            root.left.right.left = new TreeNode(10);
+            root.right.left.left = new TreeNode(11);
+            root.right.left.right = new TreeNode(12);
+            root.left.right.right = new TreeNode(13);
+            root.right.right.left = new TreeNode(14);
+            root.right.right.right = new TreeNode(15);
+          System.out.println("After deleting node 3 : " + deleteNode(root,3));
+            traverseInOrder(root);
+
+        }
+    }
+}
